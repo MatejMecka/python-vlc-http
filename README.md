@@ -1,6 +1,21 @@
 # python-vlc-http
 Pip module for sending http requests to a VLC Server
 
+# Installation
+
+`pip install python_vlc_http`
+
+# How to use
+
+```python
+from python_vlc_http import HttpVLC
+
+vlc_client = HttpVLC('host', 'username', 'password')
+```
+
+**NOTE:** Host follows the format of http://thisissomeaddrress.com:[PORT NUMBER HERE] else it will raise an exception!
+
+
 # Methods
  
  
