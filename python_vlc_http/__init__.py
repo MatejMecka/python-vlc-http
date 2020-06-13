@@ -1,0 +1,1 @@
+from python_vlc_http.vlc import HttpVLC
