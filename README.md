@@ -92,19 +92,22 @@ Pip module for sending http requests to a VLC Server
 
     Send stop command.
 
-* `subtitle_delay(self)`
+* `subtitle_delay()`
 
     Return the set delay for subtitles
 
-* `title(self)`
+* `title()`
 
     Get the title playing, if none it returns None
     
 * `toggle_fullscreen()`
+
     Toggle Fullscreen
 
 * `track_number()`
+
     Get the track_number playing, if none it returns None
 
 * `volume()`
+
     Return the volume of the media playing
