@@ -64,10 +64,9 @@ class HttpVLC():
         self._data['loop'] = response_data['loop']
 
         # Information Elements
-        print(response_data['information'])
-        if 'information' in self._status:
+        if 'information' in response_data:
             try:
-                for info in self._status['information']['category']:
+                for info in response_data['information']['category']:
                     if info.get('@name') == 'meta':
                         for elem in info['info']:
                             self._data[elem['@name']] = elem['#text']
@@ -75,15 +74,11 @@ class HttpVLC():
                 pass
         #self._data['album'] = response_data['information']['category'][''] or None
 
-        try:
-            self._data['filename'] = response_data['information']
-        except:
-            pass
-
         return self._data
 
     def media_artist(self):
-        pass
+        """Return Current Artist playing"""
+        return self._data.get('artist') or None
 
     def is_fullscreen(self):
         """Return if VLC is in fullscreen"""
@@ -102,7 +97,7 @@ class HttpVLC():
         return self._data['apiversion']
 
     def media_time(self):
-        """Return """
+        """Return how long the media file is"""
         return self._data['time']
 
     def volume(self):
@@ -149,43 +144,39 @@ class HttpVLC():
         """Get the filename """
         return self._data.get('filename') or None
 
-    def artist(self):
-        """Get the artist playing, if none it returns None """
-        return self._data.get('artist') or None
-
     def title(self):
         """Get the title playing, if none it returns None """
         return self._data.get('title') or None
 
     def subtitle_delay(self):
-        """Return if playback is set on repeat """
+        """Return the set delay for subtitles """
         return self._data['subtitledelay']
 
     def set_volume(self, volume):
         """Set volume level, range 0..1."""
         new_volume = str(int(volume * 256))
-        return self.fetch_data(command=f"volume&val={new_volume}")[0]
+        return self.fetch_data(command=f"volume&val={new_volume}")
 
     def stop(self):
         """Send stop command."""
-        return self.fetch_data(command="pl_stop")[0]
+        return self.fetch_data(command="pl_stop")
 
     def previous_track(self):
         """Play previous media in queue """
-        return self.fetch_data(command="pl_previous")[0]
+        return self.fetch_data(command="pl_previous")
 
     def next_track(self):
         """Play next media in queue """
-        return self.fetch_data(command="pl_next")[0]
+        return self.fetch_data(command="pl_next")
 
     def clear_queue(self):
         """Clear media in queue """
-        return self.fetch_data(command="pl_empty")[0]
+        return self.fetch_data(command="pl_empty")
 
     def shuffle(self):
         """Set shuffle mode """
-        return self.fetch_data(command="pl_random")[0]
+        return self.fetch_data(command="pl_random")
 
     def toggle_fullscreen(self):
         """Toggle Fullscreen"""
-        return self.fetch_data(command="fullscreen")[0]
+        return self.fetch_data(command="fullscreen")
