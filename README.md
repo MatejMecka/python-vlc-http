@@ -11,6 +11,12 @@ Pip module for sending http requests to a VLC Server
 from python_vlc_http import HttpVLC
 
 vlc_client = HttpVLC('host', 'username', 'password')
+
+fullscreen_status = vlc_client.is_fullscreen()
+
+if(fullscreen_status):
+   print('VLC is running on fullscreen!')
+
 ```
 
 **NOTE:** Host follows the format of http://thisissomeaddrress.com:[PORT NUMBER HERE] else it will raise an exception!
