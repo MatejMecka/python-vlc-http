@@ -180,3 +180,11 @@ class HttpVLC():
     def toggle_fullscreen(self):
         """Toggle Fullscreen"""
         return self.fetch_data(command="fullscreen")
+
+    def pause(self):
+        """Pause playback"""
+        return self.fetch_data(command="pl_pause")
+
+    def play(self):
+        """Start playing media playback"""
+        return self.fetch_data(command="pl_play")

@@ -132,3 +132,11 @@ if(fullscreen_status):
 * `volume()`
 
     Return the volume of the media playing
+    
+* `play()`
+
+    Start playing media playback
+
+* `pause()`
+
+    Pause playback
