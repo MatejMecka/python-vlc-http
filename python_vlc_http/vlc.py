@@ -8,10 +8,13 @@ _LOGGER = logging.getLogger(__name__)
 class HttpVLC():
     def __init__(self, host=None, username=None, password=None):
         self.host = host
-        self.username = username
-        self.password = password
+        self.username = username or ''
+        self.password = password or ''
         self._data = {}
         self.parse_data()
+
+        if self.host is None or self.host is '':
+            raise("Host is empty! Input host to proceed")
 
     def status_code(self, request):
         if request.status_code == 200:
