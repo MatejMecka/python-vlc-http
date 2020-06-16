@@ -10,11 +10,12 @@ class HttpVLC():
         self.host = host
         self.username = username or ''
         self.password = password or ''
-        self._data = {}
-        self.parse_data()
 
         if self.host is None or self.host is '':
             raise("Host is empty! Input host to proceed")
+
+        self._data = {}
+        self.parse_data()
 
     def status_code(self, request):
         if request.status_code == 200:
@@ -43,8 +44,8 @@ class HttpVLC():
         return self.fetch_status(command)
 
 
-    def parse_data(self):
-        response_data = self.fetch_data(command=None)
+    def parse_data(self, command=None):
+        response_data = self.fetch_data(command=command)
         # Root Elements
         self._data['fullscreen'] = True if response_data['fullscreen'] == 'true' else False
         self._data['aspectratio'] = response_data.get('aspectratio') or None
@@ -158,36 +159,36 @@ class HttpVLC():
     def set_volume(self, volume):
         """Set volume level, range 0..1."""
         new_volume = str(int(volume * 256))
-        return self.fetch_data(command=f"volume&val={new_volume}")
+        return self.parse_data(command=f"volume&val={new_volume}")
 
     def stop(self):
         """Send stop command."""
-        return self.fetch_data(command="pl_stop")
+        return self.parse_data(command="pl_stop")
 
     def previous_track(self):
         """Play previous media in queue """
-        return self.fetch_data(command="pl_previous")
+        return self.parse_data(command="pl_previous")
 
     def next_track(self):
         """Play next media in queue """
-        return self.fetch_data(command="pl_next")
+        self.parse_data(command="pl_next")
 
     def clear_queue(self):
         """Clear media in queue """
-        return self.fetch_data(command="pl_empty")
+        return self.parse_data(command="pl_empty")
 
     def shuffle(self):
         """Set shuffle mode """
-        return self.fetch_data(command="pl_random")
+        return self.parse_data(command="pl_random")
 
     def toggle_fullscreen(self):
         """Toggle Fullscreen"""
-        return self.fetch_data(command="fullscreen")
+        return self.parse_data(command="fullscreen")
 
     def pause(self):
         """Pause playback"""
-        return self.fetch_data(command="pl_pause")
+        return self.parse_data(command="pl_pause")
 
     def play(self):
         """Start playing media playback"""
-        return self.fetch_data(command="pl_play")
+        return self.parse_data(command="pl_play")
