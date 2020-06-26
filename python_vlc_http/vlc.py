@@ -44,28 +44,10 @@ class HttpVLC():
         return self.fetch_status(command)
 
 
-    def parse_data(self, command=None):
+    def parse_data(self, command=None, option='state', in_information=False):
         response_data = self.fetch_data(command=command)
-        # Root Elements
-        self._data['fullscreen'] = True if response_data['fullscreen'] == 'true' else False
-        self._data['aspectratio'] = response_data.get('aspectratio') or None
-        self._data['audiodelay'] = response_data['audiodelay']
-        self._data['apiversion'] = response_data['apiversion']
-        self._data['currentplid'] = response_data['currentplid']
-        self._data['time'] = response_data['time']
-        self._data['volume'] = response_data['volume']
-        self._data['length'] = response_data['length']
-        self._data['random'] = True if response_data['random'] == 'true' else False
-        self._data['state'] = response_data['state']
-        self._data['version'] = response_data['version']
-        self._data['position'] = response_data['position']
-        self._data['repeat'] = response_data['repeat']
-        self._data['subtitledelay'] = response_data['subtitledelay']
-        self._data['rate'] = response_data['rate']
-        self._data['loop'] = response_data['loop']
-        self._data['track_number'] = response_data['loop']
-        self._data['loop'] = response_data['loop']
-        self._data['loop'] = response_data['loop']
+        if not in_information:
+            return response_data.get(option) or None
 
         # Information Elements
         if 'information' in response_data:
@@ -73,80 +55,92 @@ class HttpVLC():
                 for info in response_data['information']['category']:
                     if info.get('@name') == 'meta':
                         for elem in info['info']:
-                            self._data[elem['@name']] = elem['#text']
+                            if elem['@name'] == option:
+                                return elem['#text']
             except:
                 pass
         #self._data['album'] = response_data['information']['category'][''] or None
 
         return self._data
 
+    def update_data(self):
+        self.parse_data()
+
     def media_artist(self):
         """Return Current Artist playing"""
-        return self._data.get('artist') or None
+        return self.parse_data(option='artist', in_information=True) or None
 
     def is_fullscreen(self):
         """Return if VLC is in fullscreen"""
-        return self._data['fullscreen']
+        return True if self.parse_data(option='fullscreen') == 'true' else False
 
     def aspect_ratio(self):
         """Return Aspect Ratio of media playing"""
-        return self._data['aspectratio']
+        return self.parse_data(option='aspectratio')
+
+    def current_playlist_id(self):
+        """Return Current playlist id"""
+        return self.parse_data(option='currentplid')
 
     def audio_delay(self):
         """Return Aspect Ratio of media playing"""
-        return self._data['audiodelay']
+        return self.parse_data(option='audiodelay')
 
     def api_version(self):
         """Return API Version of VLC Server"""
-        return self._data['apiversion']
+        return self.parse_data(option='apiversion')
+
+    def version(self):
+        """Return Version of VLC Server"""
+        return self.parse_data(option='version')
 
     def media_time(self):
         """Return how long the media file is"""
-        return self._data['time']
+        return self.parse_data(option='time')
 
     def volume(self):
         """Return the volume of the media playing"""
-        return self._data['volume']
+        return self.parse_data(option='volume')
 
     def media_length(self):
         """Return the length of the media in seconds"""
-        return self._data['length']
+        return self.parse_data(option='length')
 
     def is_random(self):
         """Return if shuffle is on or off"""
-        return self._data['random']
+        return True if self.parse_data(option='random') == 'true' else False
 
     def rate(self):
         """Return the rate"""
-        return self._data['rate']
+        return self.parse_data(option='rate')
 
     def state(self):
         """Return the state of the media file"""
-        return self._data['state']
+        return self.parse_data(option='state')
 
     def is_looped(self):
         """Return if VLC is set on loop"""
-        return self._data['loop']
+        return self.parse_data(option='loop')
 
     def position(self):
         """Return the position of the playback """
-        return self._data['position']
+        return self.parse_data(option='position')
 
     def is_on_repeat(self):
         """Return if playback is set on repeat """
-        return self._data['repeat']
+        return self.parse_data(option='repeat')
 
     def album(self):
         """Get the album playing, if none it returns None """
-        return self._data.get('album') or None
+        return self.parse_data(option='album', in_information=True) or None
 
     def track_number(self):
         """Get the track_number playing, if none it returns None """
-        return self._data.get('track_number') or None
+        return self.parse_data(option='track_number', in_information=True) or None
 
     def filename(self):
         """Get the filename """
-        return self._data.get('filename') or None
+        return self.parse_data(option='filename', in_information=True) or None
 
     def title(self):
         """Get the title playing, if none it returns None """
@@ -154,7 +148,7 @@ class HttpVLC():
 
     def subtitle_delay(self):
         """Return the set delay for subtitles """
-        return self._data['subtitledelay']
+        return self.parse_data(option='subtitledelay')
 
     def set_volume(self, volume):
         """Set volume level, range 0..1."""
