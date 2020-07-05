@@ -21,9 +21,9 @@ class HttpVLC():
         if request.status_code == 200:
             return True
         elif request.status_code == 401:
-             raise('Unathorized! The provided username or password were incorrect')
+             raise("Unathorized! The provided username or password were incorrect")
         else:
-            raise f"Query failed, response code: {req.status_code} Full message: {req.text}"
+            raise Exception(f"Query failed, response code: {request.status_code} Full message: {request.text}")
 
     def fetch_playlist(self):
         url = f"{self.host}/requests/playlist.xml"
@@ -186,3 +186,33 @@ class HttpVLC():
     def play(self):
         """Start playing media playback"""
         return self.parse_data(command="pl_play")
+
+    def play_playlist_item(self, id=0):
+        """Start playing a specific item from a playlist"""
+        return self.parse_data(command=f"pl_play&id={id}")
+
+    def delete_playlist_item(self, id=0):
+        """Delete a specific item from a playlist"""
+        return self.parse_data(command=f"pl_delete&id={id}")
+
+    def seek(self, val):
+        """Seek to a part of a video."""
+        return self.parse_data(command=f"pl_play?{val}")
+
+    def sub_delay(self, val):
+        """Select the subtitle delay for a video."""
+        return self.parse_data(command=f"subdelay?{val}")
+
+    def subtitle_track(self, val):
+        """Select the subtitle track for a video."""
+        return self.parse_data(command=f"subtitle_track?{val}")
+
+    def video_track(self, val):
+        """Select the video track for a particular media file."""
+        return self.parse_data(command=f"video_track?{val}")
+
+    def set_rate(self, val):
+        """Set the rate for a current media file"""
+        if val > 0:
+            return self.command(f'rate?{val}')
+        raise Exception('The rate must be grater than zero.')

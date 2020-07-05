@@ -140,3 +140,52 @@ if(fullscreen_status):
 * `pause()`
 
     Pause playback
+    
+* `play_playlist_item`
+    
+    Arguments: 
+    
+     * id -> The id of the playlist item you want to play
+
+    Start playing a specific item from a playlist
+    
+*  `delete_playlist_item`
+
+     Delete a specific item from a playlist
+
+     Arguments: 
+    
+     * id -> The id of the playlist item you want to delete
+     
+*  `sub_delay`
+
+     Select the subtitle delay for a video.
+
+     Arguments: 
+    
+     * val -> The delay for the subtitles
+     
+ *  `video_track`
+
+     Select the video track for a particular media file.
+
+     Arguments: 
+    
+     * val -> ID from the stream
+     
+ *  `subtitle_track`
+
+     Select the subtitle track for a video.
+
+     Arguments: 
+    
+     * val -> ID from the stream
+     
+ *  `set_rate`
+
+     Set the rate for a current media file.
+
+     Arguments: 
+    
+     * val -> the value of what ratee it should be
+     
