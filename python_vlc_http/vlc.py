@@ -1,11 +1,18 @@
-
 import logging
 import requests
 import xmltodict
 
 _LOGGER = logging.getLogger(__name__)
 
-class HttpVLC():
+class InvalidCredentials(Exception):
+    """Exception related to Invalid Credntials"""
+    pass
+
+class RequestFailed(Exception):
+    """Exception related to an Invalid Request"""
+    pass
+
+class HttpVLC:
     def __init__(self, host=None, username=None, password=None):
         self.host = host
         self.username = username or ''
@@ -21,9 +28,9 @@ class HttpVLC():
         if request.status_code == 200:
             return True
         elif request.status_code == 401:
-             raise("Unathorized! The provided username or password were incorrect")
+             raise InvalidCredentials("Unathorized! The provided username or password were incorrect")
         else:
-            raise Exception(f"Query failed, response code: {request.status_code} Full message: {request.text}")
+            raise RequestFailed(f"Query failed, response code: {request.status_code} Full message: {request.text}")
 
     def fetch_playlist(self):
         url = f"{self.host}/requests/playlist.xml"
@@ -38,11 +45,10 @@ class HttpVLC():
             data = xmltodict.parse(request.text, process_namespaces=True).get("root")
             return data
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as error:
-            raise f"The VLC Server is unreachable. Errorr code: {error}"
+            raise Exception(f"The VLC Server is unreachable. Errorr code: {error}")
 
     def fetch_data(self, command=None):
         return self.fetch_status(command)
-
 
     def parse_data(self, command=None, option='state', in_information=False):
         response_data = self.fetch_data(command=command)
@@ -59,8 +65,6 @@ class HttpVLC():
                                 return elem['#text']
             except:
                 pass
-        #self._data['album'] = response_data['information']['category'][''] or None
-
         return self._data
 
     def update_data(self):
