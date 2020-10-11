@@ -5,7 +5,7 @@ with open('README.md') as readme_file:
 
 setup_args = dict(
     name='python-vlc-http',
-    version='0.0.6',
+    version='0.0.8',
     description='Python module that enables communication with the VLC http server ',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n',
