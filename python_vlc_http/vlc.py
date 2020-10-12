@@ -12,10 +12,6 @@ class RequestFailed(Exception):
     """Exception related to an Invalid Request"""
     pass
 
-class FailedConnecting(Exception):
-    """Exception related to when the plugin fails to connect"""
-    pass
-
 class MissingHost(Exception):
     """Exception related when a host is missing"""
     pass
@@ -54,7 +50,7 @@ class HttpVLC:
             data = xmltodict.parse(request.text, process_namespaces=True).get("root")
             return data
         except (requests.exceptions.ConnectionError, requests.exceptions.Timeout) as error:
-            raise FailedConnecting(f"The VLC Server is unreachable. Error code: {error}")
+            raise RequestFailed(f"The VLC Server is unreachable. Error code: {error}")
 
     def fetch_data(self, command=None):
         return self.fetch_status(command)

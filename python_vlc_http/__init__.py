@@ -1,1 +1,1 @@
-from python_vlc_http.vlc import HttpVLC
+from python_vlc_http.vlc import HttpVLC, InvalidCredentials, RequestFailed, MissingHost
