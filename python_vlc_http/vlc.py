@@ -161,7 +161,7 @@ class HttpVLC:
 
     def set_volume(self, volume):
         """Set volume level, range 0..1."""
-        new_volume = str(int(volume * 256))
+        new_volume = str(int(volume * 320))
         return self.parse_data(command=f"volume&val={new_volume}")
 
     def stop(self):
@@ -206,7 +206,7 @@ class HttpVLC:
 
     def seek(self, val):
         """Seek to a part of a video."""
-        return self.parse_data(command=f"pl_play?{val}")
+        return self.parse_data(command=f"seek&val={val}")
 
     def sub_delay(self, val):
         """Select the subtitle delay for a video."""
@@ -223,5 +223,5 @@ class HttpVLC:
     def set_rate(self, val):
         """Set the rate for a current media file"""
         if val > 0:
-            return self.command(f'rate?{val}')
+            return self.parse_data(command=f"rate&val={val}")
         raise Exception('The rate must be grater than zero.')
