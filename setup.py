@@ -34,7 +34,6 @@ setup_args = dict(
 
 install_requires = [
     'requests',
-    'xmltodict'
 ]
 
 if __name__ == '__main__':
