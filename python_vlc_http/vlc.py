@@ -239,7 +239,7 @@ class HttpVLC:
         """Set the rate for a current media file"""
         if val > 0:
             return self.parse_data(command=f"rate&val={val}")
-        raise Exception("The rate must be grater than zero.")
+        raise Exception("The rate must be greater than zero.")
 
     def stats(self):
         """Return stats"""
@@ -280,3 +280,11 @@ class HttpVLC:
     def chapters(self):
         """Return chapters"""
         pass
+
+    def toggle_loop(self):
+        """Toggle loop mode"""
+        return self.parse_data(command="pl_loop")
+
+    def toggle_repeat(self):
+        """Toggle repeat mode"""
+        return self.parse_data(command="pl_repeat")
